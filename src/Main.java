@@ -3,9 +3,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.lang.Math;
+import java.util.Random;
 
 public class Main {
-
+  static int blockSize = 10;
   static class BMPImage {
     String filename;
     int imageSize = 0;
@@ -143,8 +144,7 @@ public class Main {
 
   }
 
-  static void drawOtetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawOtetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0x00, (byte)0xff, (byte)0xff };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
@@ -153,8 +153,7 @@ public class Main {
 
   }
 
-  static void drawItetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawItetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0xff, (byte)0xff, (byte)0x00 };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x, y + blockSize, color, blockSize);
@@ -162,8 +161,7 @@ public class Main {
     drawTetrisBlock(myBmp, x, y + 3 * blockSize, color, blockSize);
   }
 
-  static void drawStetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawStetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0x00, (byte)0x00, (byte)0xff };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
@@ -171,8 +169,7 @@ public class Main {
     drawTetrisBlock(myBmp, x + 2 * blockSize, y + blockSize, color, blockSize);
   }
 
-  static void drawZtetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawZtetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0x00, (byte)0xff, (byte)0x00 };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
@@ -180,8 +177,7 @@ public class Main {
     drawTetrisBlock(myBmp, x - blockSize, y + blockSize, color, blockSize);
   }
 
-  static void drawLtetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawLtetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0x00, (byte)0xff, (byte)0xff };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
@@ -189,8 +185,7 @@ public class Main {
     drawTetrisBlock(myBmp, x, y + 2 * blockSize, color, blockSize);
   }
 
-  static void drawJtetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawJtetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0x88, (byte)0x88, (byte)0xff };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
@@ -198,8 +193,7 @@ public class Main {
     drawTetrisBlock(myBmp, x + blockSize, y + 2 * blockSize, color, blockSize);
   }
 
-  static void drawTtetromino(BMPImage myBmp, int x, int y) {
-    final int blockSize = 10;
+  static void drawTtetromino(BMPImage myBmp, int x, int y, int blockSize) {
     byte[] color = {(byte)0xff, (byte)0x00, (byte)0xff };
     drawTetrisBlock(myBmp, x, y, color, blockSize);
     drawTetrisBlock(myBmp, x - blockSize, y + blockSize, color, blockSize);
@@ -228,28 +222,62 @@ public class Main {
     }
   }
 
-  static void draw_rect_(BMPImage myBmp, int x, int y, int rect_width, int rect_height, byte[] color) {
-    for (int y_coor = y; y_coor < y + rect_height && y_coor < myBmp.height; ++y_coor) {
-      for (int x_coor = x; x_coor < x + rect_width && x_coor < myBmp.width; ++x_coor) {
+  static void draw_rect(BMPImage myBmp, int x, int y, int width, int height, byte[] color) {
+    for (int y_coor = y; y_coor < y + height && y_coor < myBmp.height; ++y_coor) {
+      for (int x_coor = x; x_coor < x + width && x_coor < myBmp.width; ++x_coor) {
         int index = y_coor * myBmp.stride + x_coor * 3;
         myBmp.data[index] = color[0];
         myBmp.data[index + 1] = color[1];
         myBmp.data[index + 2] = color[2];
       }
     }
+      }
+
+
+
+  static void draw_rect(BMPImage myBmp, int x, int y, int width, int height, String hex_color) {
+    byte[] color = parseColor(hex_color);
+    draw_rect(myBmp, x, y, width, height, color);
   }
 
-  static void draw_rect(BMPImage myBmp, int x, int y, int rect_width, int rect_height, String hex_color) {
-    byte[] color = parseColor(hex_color);
 
-    for (int y_coor = y; y_coor < y + rect_height && y_coor < myBmp.height; ++y_coor) {
-      for (int x_coor = x; x_coor < x + rect_width && x_coor < myBmp.width; ++x_coor) {
-        int index = y_coor * myBmp.stride + x_coor * 3;
-        myBmp.data[index] = color[0];
-        myBmp.data[index + 1] = color[1];
-        myBmp.data[index + 2] = color[2];
+  static void tetrisGame(BMPImage myBmp) {
+    int y = 200;
+    String[] tetromino = {"Otetromino", "Itetromino", "Stetromino", "Ztetromino", "Ltetromino", "Jtetromino", "Ttetromino" };
+    Random random = new Random();
+    int randomInt = random.nextInt(7);
+    int RanomCoor = random.nextInt(90)
+    while (1/*!endGame(myBmp)*/) {
+      int x = RanomCoor / 10 * 10;
+      String a = tetromino[randomInt];
+      switch (a) {
+        case "Otetromino":
+          drawOtetromino(myBmp, x, y, blockSize);
+          break;
+        case "Itetromino":
+          drawItetromino(myBmp, x, y, blockSize);
+          break;
+        case "Stetromino":
+          drawStetromino(myBmp, x, y, blockSize);
+          break;
+        case "Ztetromino":
+          drawZtetromino(myBmp, x, y, blockSize);
+          break;
+        case "Ltetromino":
+          drawLtetromino(myBmp, x, y, blockSize);
+          break;
+        case "Jtetromino":
+          drawJtetromino(myBmp, x, y, blockSize);
+          break;
+        case "Ttetromino":
+          drawTtetromino(myBmp, x, y, blockSize);
+          break;
+        default:
+          System.err.println("tetrisGame не сработало");
+          break;
       }
-    }
+
+  }
   }
 
   public static void main(String[] args) throws IOException {
@@ -269,42 +297,118 @@ public class Main {
     myBmp.calcImageSize();
     myBmp.data = new byte[myBmp.imageSize];
 
+    int x = 0;
+    int y = 0;
     for (int i = 3; i < argc; ) {
       String arg = args[i];
-      if (arg.equals("clear")) {
-        if (i + 1 >= argc || args[i + 1].length() != 6) {
-          System.err.println("Ошибка: некорректный цвет или введённые данные для clear");
+      switch (arg) {
+        case "clear":
+          if (i + 1 >= argc || args[i + 1].length() != 6) {
+            System.err.println("Ошибка: некорректный цвет или введённые данные для clear");
+            break;
+          }
+          draw_clear(myBmp, args[i + 1]);
+          i += 2;
           break;
-        }
-        draw_clear(myBmp, args[i + 1]);
-        i += 2;
-
-      } else if (arg.equals("spiral")) {
-        if (i + 1 >= argc || args[i + 1].length() != 6) {
-          System.err.println("Ошибка: некорректный цвет или введённые данные для spiral");
+        case "spiral":
+          if (i + 1 >= argc || args[i + 1].length() != 6) {
+            System.err.println("Ошибка: некорректный цвет или введённые данные для spiral");
+            break;
+          }
+          draw_spiral(myBmp, args[i + 1]);
+          i += 2;
           break;
-        }
-        draw_spiral(myBmp, args[i + 1]);
-        i += 2;
-
-      } else if (arg.equals("rect")) {
-        if (i + 1 >= argc || args[i + 5].length() != 6) {
-          System.err.println("Ошибка: некорректные данные для rect");
+        case "rect":
+          if (i + 1 >= argc || args[i + 5].length() != 6) {
+            System.err.println("Ошибка: некорректные данные для rect");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          int width = Integer.parseInt(args[i + 3]);
+          int height = Integer.parseInt(args[i + 4]);
+          draw_rect(myBmp, x, y, width, height, args[i + 5]);
+          i += 6;
           break;
-        }
-        int x = Integer.parseInt(args[i + 1]);
-        int y = Integer.parseInt(args[i + 2]);
-        int rect_width = Integer.parseInt(args[i + 3]);
-        int rect_height = Integer.parseInt(args[i + 4]);
-        draw_rect(myBmp, x, y, rect_width, rect_height, args[i + 5]);
-        i += 6;
+        case "Otetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Otetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawOtetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Itetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Itetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawItetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Stetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Stetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawStetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Ztetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Ztetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawZtetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Ltetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Ltetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawLtetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Jtetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Jtetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawJtetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "Ttetromino":
+          if (i + 2 >= argc ) {
+            System.err.println("Ошибка: некорректные данные для Ttetromino");
+            break;
+          }
+          x = Integer.parseInt(args[i + 1]);
+          y = Integer.parseInt(args[i + 2]);
+          drawTtetromino(myBmp, x, y, blockSize);
+          i += 3;
+          break;
+        case "tetrisGame":
+         // tetrisGame(myBmp);
+          i += 1;
+        default:
+          System.err.println("Ошибка6 неизвестная команда '" + arg + "'");
+          break;
 
-      } else {
-        System.err.println("Ошибка6 неизвестная команда '" + arg + "'");
-        break;
       }
     }
-
     createBMP(myBmp);
     //return;
 

@@ -1,4 +1,5 @@
-/*
+package org.maxim;
+
 public class ArrayOp {
   static int pushUint16_t(int value, byte[] data, int index) {
     data[index++] = (byte) (value);
@@ -6,4 +7,3 @@ public class ArrayOp {
     return index;
   }
 }
-*/

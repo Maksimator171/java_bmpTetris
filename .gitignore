@@ -1,8 +1,9 @@
+target/
+
 ### IntelliJ IDEA ###
-out/
+.idea/*
+
+build/
 
 ### VS Code ###
 .vscode/
-
-
-/*.iml

@@ -7,6 +7,8 @@ import java.nio.file.StandardOpenOption;
 import java.lang.Math;
 import java.util.Random;
 
+import static org.maxim.ArrayOp.*;
+
 public class DrawToBmp {
   static int blockSize = 10;
 
@@ -32,24 +34,6 @@ public class DrawToBmp {
       imageSize = stride * height;
     }
 
-  }
-
-  static int pushUint16_t(int value, byte[] data, int index) {
-    data[index++] = (byte) (value);
-    data[index++] = (byte) (value >> 8);
-    return index;
-  }
-
-  static int pushUint32_t(int value, byte[] data, int index) {
-    data[index++] = (byte) (value);
-    data[index++] = (byte) (value >> 8);
-    data[index++] = (byte) (value >> 16);
-    data[index++] = (byte) (value >> 24);
-    return index;
-  }
-
-  static int pushInt32_t(int value, byte[] data, int index) {
-    return pushUint32_t(value, data, index);
   }
 
   static void writeFile(String filename, byte[] bytes) throws IOException {
@@ -119,8 +103,7 @@ public class DrawToBmp {
     }
   }
 
-  static void drawTetrisBlock(BMPImage myBmp, int x, int y, byte[] color, int blockSize) {
-    byte[] borderColor = {0, 0, 0};
+  static void drawTetrisBlock(BMPImage myBmp, int x, int y, byte[] color,byte[] borderColor,  int blockSize) {
 
     int startX = Math.max(x, 0);
     int startY = Math.max(y, 0);
@@ -146,113 +129,6 @@ public class DrawToBmp {
 
   }
 
-  static void drawOtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x00, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-
-  }
-
-  static void removeOtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void additionOtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x00, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y + blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y + blockSize, color, blockSize);
-  }
-
-  static void drawItetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0x00 };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - 2 * blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - 3 * blockSize, color, blockSize);
-  }
-
-  static void removeItetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y - 3 * blockSize, color, blockSize);
-  }
-
-  static void additionItetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0x00 };
-    drawTetrisBlock(myBmp, x, y + blockSize , color, blockSize);
-  }
-
-  static void drawStetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x00, (byte)0x00, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void removeStetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void additionStetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0x00 };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void drawZtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x00, (byte)0xff, (byte)0x00 };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x - 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void removeZtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x - 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void additionZtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0xff, (byte)0x00 };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x - 2 * blockSize, y - blockSize, color, blockSize);
-  }
-
-  static void drawLtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x00, (byte)0xff, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - 2 * blockSize, color, blockSize);
-  }
-
-  static void drawJtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0x88, (byte)0x88, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - 2 * blockSize, color, blockSize);
-  }
-
-  static void drawTtetromino(BMPImage myBmp, int x, int y, int blockSize) {
-    byte[] color = {(byte)0xff, (byte)0x00, (byte)0xff };
-    drawTetrisBlock(myBmp, x, y, color, blockSize);
-    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x, y - blockSize, color, blockSize);
-    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, color, blockSize);
-  }
 
   static void draw_spiral(BMPImage myBmp, byte[] color) {
     int min_side = Math.min(myBmp.height, myBmp.width);
@@ -294,221 +170,164 @@ public class DrawToBmp {
     draw_rect(myBmp, x, y, width, height, color);
   }
 
+  static int now_frame = 0;
 
+  static void saveFrame(BMPImage myBmp) throws IOException {
+    String nowFrame = String.format("frame%d.bmp", now_frame++);
+    myBmp.filename = nowFrame;
+    createBMP(myBmp);
+  }
 
-
-
-
-
-
-
-  static void fallTetramino(BMPImage myBmp, String tetraminoType, int x, int y) {
-    byte[] filedColor = {(byte)0xff, (byte)0xff, (byte)0xff };
+  static boolean fallTetramino(BMPImage myBmp, int tetraminoType, int x, int y, boolean endGame) throws IOException {
+    int frame = 0;
     int checkIndex = (y + 1) * myBmp.stride + x * 3;
     boolean endFall = false;
     if (checkIndex > myBmp.imageSize) {
       endFall = true;
     }
       switch (tetraminoType) {
-        case "Otetromino":
+        case 1:
           while (!endFall ) {
-            drawOtetromino(myBmp, x, y, blockSize);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 30] != (byte) 0xff) {
-              endFall = true;
-              break;
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 3 * blockSize] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
             }
+            TetrisRenderer.shiftOTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
           }
-
           break;
-        case "Itetromino":
-          drawItetromino(myBmp, x, y, blockSize);
+        case 2:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftITetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
-        case "Stetromino":
-          drawStetromino(myBmp, x, y, blockSize);
+        case 3:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 30] != (byte) 0xff ||
+                 myBmp.data[checkIndex + 60 - myBmp.stride] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftSTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
-        case "Ztetromino":
-          drawZtetromino(myBmp, x, y, blockSize);
+        case 4:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30] != (byte) 0xff ||
+                myBmp.data[checkIndex - 60 - myBmp.stride] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftZTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
-        case "Ltetromino":
-          drawLtetromino(myBmp, x, y, blockSize);
+        case 5:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 30] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftLTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
-        case "Jtetromino":
-          drawJtetromino(myBmp, x, y, blockSize);
+        case 6:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftJTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
-        case "Ttetromino":
-          drawTtetromino(myBmp, x, y, blockSize);
+        case 7:
+          while (!endFall ) {
+            saveFrame(myBmp);
+            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30 - myBmp.stride] != (byte) 0xff ||
+                myBmp.data[checkIndex + 30 - myBmp.stride] != (byte) 0xff) {
+              if (y == 0) {
+                endGame = true;
+              }
+              return endGame;
+            }
+            TetrisRenderer.shiftTTetromino(myBmp, x, y, blockSize);
+            y += blockSize;
+          }
           break;
         default:
-          System.err.println("tetrisGame не сработало");
+          System.err.println("fallTetramino не сработало");
           break;
       }
+    return endGame;
   }
 
-  static void tetrisGame(BMPImage myBmp) {
+  static void tetrisGame(BMPImage myBmp) throws IOException {
     boolean endGame = false;
     int y = 0;
-    int[] tetromino = {1, 2, 3, 4, 5, 6, 7 };
     Random random = new Random();
     int randomInt = random.nextInt(7);
     int RanomCoor = random.nextInt(myBmp.width-10);
-    while (endGame) {
+    while (!endGame) {
       int x = RanomCoor / 10 * 10;
-      int a = tetromino[randomInt];
+      int a = randomInt;
       switch (a) {
-        case 1 -> drawOtetromino(myBmp, x, y, blockSize);
-        case 2 -> drawItetromino(myBmp, x, y, blockSize);
-        case 3 -> drawStetromino(myBmp, x, y, blockSize);
-        case 4 -> drawZtetromino(myBmp, x, y, blockSize);
-        case 5 -> drawLtetromino(myBmp, x, y, blockSize);
-        case 6 -> drawJtetromino(myBmp, x, y, blockSize);
-        case 7 -> drawTtetromino(myBmp, x, y, blockSize);
+        case 1 -> {
+          TetrisRenderer.drawOTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 2 -> {
+          TetrisRenderer.drawITetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 3 -> {
+          TetrisRenderer.drawSTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 4 -> {
+          TetrisRenderer.drawZTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 5 -> {
+          TetrisRenderer.drawLTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 6 -> {
+          TetrisRenderer.drawJTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
+        case 7 -> {
+          TetrisRenderer.drawTTetromino(myBmp, x, y, blockSize);
+          fallTetramino(myBmp, a, x, y, endGame);
+        }
         default -> System.err.println("tetrisGame не сработало");
       }
 
     }
   }
-
-  public static void main(String[] args) throws IOException {
-
-    int argc = args.length;
-    if (argc < 3) {
-      System.out.println("Usage: " + args[0] + " <file.bmp> <width> <height> [commands...]");
-      return;
-    }
-
-    BMPImage myBmp = new BMPImage();
-    myBmp.filename = args[0];
-    myBmp.width = Integer.parseInt(args[1]);
-    myBmp.height = Integer.parseInt(args[2]);
-    myBmp.calcStride();
-    myBmp.calcPadding();
-    myBmp.calcImageSize();
-    myBmp.data = new byte[myBmp.imageSize];
-
-    int x = 0;
-    int y = 0;
-    for (int i = 3; i < argc; ) {
-      String arg = args[i];
-      switch (arg) {
-        case "clear":
-          if (i + 1 >= argc || args[i + 1].length() != 6) {
-            System.err.println("Ошибка: некорректный цвет или введённые данные для clear");
-            break;
-          }
-          clear(myBmp, args[i + 1]);
-          i += 2;
-          break;
-        case "spiral":
-          if (i + 1 >= argc || args[i + 1].length() != 6) {
-            System.err.println("Ошибка: некорректный цвет или введённые данные для spiral");
-            break;
-          }
-          draw_spiral(myBmp, args[i + 1]);
-          i += 2;
-          break;
-        case "rect":
-          if (i + 1 >= argc || args[i + 5].length() != 6) {
-            System.err.println("Ошибка: некорректные данные для rect");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          int width = Integer.parseInt(args[i + 3]);
-          int height = Integer.parseInt(args[i + 4]);
-          draw_rect(myBmp, x, y, width, height, args[i + 5]);
-          i += 6;
-          break;
-        case "Otetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Otetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawOtetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Itetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Itetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawItetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Stetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Stetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawStetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Ztetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Ztetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawZtetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Ltetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Ltetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawLtetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Jtetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Jtetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawJtetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "Ttetromino":
-          if (i + 2 >= argc ) {
-            System.err.println("Ошибка: некорректные данные для Ttetromino");
-            break;
-          }
-          x = Integer.parseInt(args[i + 1]);
-          y = Integer.parseInt(args[i + 2]);
-          drawTtetromino(myBmp, x, y, blockSize);
-          i += 3;
-          break;
-        case "tetrisGame":
-          // tetrisGame(myBmp);
-          i += 1;
-        default:
-          System.err.println("Ошибка6 неизвестная команда '" + arg + "'");
-          break;
-
-      }
-    }
-    createBMP(myBmp);
-    //return;
-
-  }
-
-/*
-public class ArrayOp {
-  static int pushUint16_t(int value, byte[] data, int index) {
-    data[index++] = (byte) (value);
-    data[index++] = (byte) (value >> 8);
-    return index;
-  }
-}
-*/
 }

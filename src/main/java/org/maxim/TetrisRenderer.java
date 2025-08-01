@@ -2,6 +2,69 @@ package org.maxim;
 
 public class TetrisRenderer {
 
+
+  static void shiftOTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.O.color, TColors.O.border);
+    drawTetrisBlock(myBmp, x + blockSize, y + blockSize, blockSize, TColors.O.color, TColors.O.border);
+  }
+
+
+  static void shiftITetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y - 3 * blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize , blockSize, TColors.I.color, TColors.I.border);
+  }
+
+
+  static void shiftSTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x + 2 * blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.S.color, TColors.S.border);
+    drawTetrisBlock(myBmp, x + blockSize, y + blockSize, blockSize, TColors.S.color, TColors.S.border);
+    drawTetrisBlock(myBmp, x + 2 * blockSize, y, blockSize, TColors.S.color, TColors.S.border);
+  }
+
+  static void shiftZTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x - 2 * blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.Z.color, TColors.Z.border);
+    drawTetrisBlock(myBmp, x - blockSize, y + blockSize, blockSize, TColors.Z.color, TColors.Z.border);
+    drawTetrisBlock(myBmp, x - 2 * blockSize, y, blockSize, TColors.Z.color, TColors.Z.border);
+  }
+
+  static void shiftLTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x, y - 2 * blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.L.color, TColors.L.border);
+    drawTetrisBlock(myBmp, x + blockSize, y + blockSize, blockSize, TColors.L.color, TColors.L.border);
+  }
+
+  static void shiftJTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x + blockSize, y - 2 * blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.J.color, TColors.J.border);
+    drawTetrisBlock(myBmp, x + blockSize, y + blockSize, blockSize, TColors.J.color, TColors.J.border);
+  }
+
+  static void shiftTTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+    drawTetrisBlock(myBmp, x, y, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x - blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+    drawTetrisBlock(myBmp, x + blockSize, y - blockSize, blockSize, TColors.background.color, TColors.background.border);
+
+    drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.T.color, TColors.T.border);
+    drawTetrisBlock(myBmp, x - blockSize, y, blockSize, TColors.T.color, TColors.T.border);
+    drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.T.color, TColors.T.border);
+  }
+
   interface TColors {
     TetrisColors O = new TetrisColors("00ffff", "000000");
     TetrisColors I = new TetrisColors("ffff00", "000000");
@@ -9,10 +72,11 @@ public class TetrisRenderer {
     TetrisColors Z = new TetrisColors("00ff00", "000000");
     TetrisColors L = new TetrisColors("0088ff", "000000");
     TetrisColors J = new TetrisColors("8888ff", "000000");
-    TetrisColors T = new TetrisColors("ff00ff", "000000");
+    TetrisColors T = new TetrisColors("ff00ff", "ffffff");
+    TetrisColors background = new TetrisColors("ffffff", "000000");
   }
 
-  static void drawOtetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawOTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.O.color, TColors.O.border);
     drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.O.color, TColors.O.border);
     drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.O.color, TColors.O.border);
@@ -20,7 +84,7 @@ public class TetrisRenderer {
 
   }
 
-  static void drawItetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawITetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.I.color, TColors.I.border);
     drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.I.color, TColors.I.border);
     drawTetrisBlock(myBmp, x, y + 2 * blockSize, blockSize, TColors.I.color, TColors.I.border);
@@ -37,7 +101,7 @@ public class TetrisRenderer {
     byte[] border;
   }
 
-  static void drawStetromino(
+  static void drawSTetromino(
       DrawToBmp.BMPImage myBmp, int x, int y, int blockSize
   ) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.S.color, TColors.S.border);
@@ -46,28 +110,28 @@ public class TetrisRenderer {
     drawTetrisBlock(myBmp, x + 2 * blockSize, y + blockSize, blockSize, TColors.S.color, TColors.S.border);
   }
 
-  static void drawZtetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawZTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.Z.color, TColors.Z.border);
     drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.Z.color, TColors.Z.border);
     drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.Z.color, TColors.Z.border);
     drawTetrisBlock(myBmp, x - blockSize, y + blockSize, blockSize, TColors.Z.color, TColors.Z.border);
   }
 
-  static void drawLtetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawLTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.L.color, TColors.L.border);
     drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.L.color, TColors.L.border);
     drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.L.color, TColors.L.border);
     drawTetrisBlock(myBmp, x, y + 2 * blockSize, blockSize, TColors.L.color, TColors.L.border);
   }
 
-  static void drawJtetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawJTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.J.color, TColors.J.border);
     drawTetrisBlock(myBmp, x + blockSize, y, blockSize, TColors.J.color, TColors.J.border);
     drawTetrisBlock(myBmp, x + blockSize, y + blockSize, blockSize, TColors.J.color, TColors.J.border);
     drawTetrisBlock(myBmp, x + blockSize, y + 2 * blockSize, blockSize, TColors.J.color, TColors.J.border);
   }
 
-  static void drawTtetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
+  static void drawTTetromino(DrawToBmp.BMPImage myBmp, int x, int y, int blockSize) {
     drawTetrisBlock(myBmp, x, y, blockSize, TColors.T.color, TColors.T.border);
     drawTetrisBlock(myBmp, x - blockSize, y + blockSize, blockSize, TColors.T.color, TColors.T.border);
     drawTetrisBlock(myBmp, x, y + blockSize, blockSize, TColors.T.color, TColors.T.border);

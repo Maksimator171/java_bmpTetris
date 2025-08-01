@@ -7,7 +7,7 @@ public class DrawToBmpMain {
 
     int argc = args.length;
     if (argc < 3) {
-      System.out.println("Usage: " + args[0] + " <file.bmp> <width> <height> [commands...]");
+      System.out.println("Usage: DrawToBmpMain <file.bmp> <width> <height> [commands...]");
       return;
     }
 
@@ -60,7 +60,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawOtetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawOTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Itetromino":
@@ -70,7 +70,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawItetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawITetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Stetromino":
@@ -80,7 +80,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawStetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawSTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Ztetromino":
@@ -90,7 +90,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawZtetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawZTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Ltetromino":
@@ -100,7 +100,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawLtetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawLTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Jtetromino":
@@ -110,7 +110,7 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawJtetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawJTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "Ttetromino":
@@ -120,11 +120,14 @@ public class DrawToBmpMain {
           }
           x = Integer.parseInt(args[i + 1]);
           y = Integer.parseInt(args[i + 2]);
-          TetrisRenderer.drawTtetromino(myBmp, x, y, DrawToBmp.blockSize);
+          TetrisRenderer.drawTTetromino(myBmp, x, y, DrawToBmp.blockSize);
           i += 3;
           break;
         case "tetrisGame":
-          // tetrisGame(myBmp);
+          myBmp.height = 200;
+          myBmp.width = 100;
+          DrawToBmp.clear(myBmp, "ffffff");
+          DrawToBmp.tetrisGame(myBmp);
           i += 1;
         default:
           System.err.println("Ошибка6 неизвестная команда '" + arg + "'");

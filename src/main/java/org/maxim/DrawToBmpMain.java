@@ -129,6 +129,7 @@ public class DrawToBmpMain {
           DrawToBmp.clear(myBmp, "ffffff");
           DrawToBmp.tetrisGame(myBmp);
           i += 1;
+          break;
         default:
           System.err.println("Ошибка6 неизвестная команда '" + arg + "'");
           break;

@@ -103,32 +103,6 @@ public class DrawToBmp {
     }
   }
 
-  static void drawTetrisBlock(BMPImage myBmp, int x, int y, byte[] color,byte[] borderColor,  int blockSize) {
-
-    int startX = Math.max(x, 0);
-    int startY = Math.max(y, 0);
-    int endX = Math.min(x + blockSize, myBmp.width);
-    int endY = Math.min(y + blockSize, myBmp.height);
-    for (int y_coor = startY; y_coor < endY; ++y_coor) {
-      for (int x_coor = startX; x_coor < endX; ++x_coor) {
-        int index = y_coor * myBmp.stride + x_coor * 3;
-        boolean isBorder = (x_coor == x) || (x_coor == x + blockSize - 1) ||
-            (y_coor == y) || (y_coor == y + blockSize - 1);
-
-        if (isBorder) {
-          myBmp.data[index]     = borderColor[0];
-          myBmp.data[index + 1] = borderColor[1];
-          myBmp.data[index + 2] = borderColor[2];
-        } else {
-          myBmp.data[index]     = color[0];
-          myBmp.data[index + 1] = color[1];
-          myBmp.data[index + 2] = color[2];
-        }
-      }
-    }
-
-  }
-
 
   static void draw_spiral(BMPImage myBmp, byte[] color) {
     int min_side = Math.min(myBmp.height, myBmp.width);
@@ -173,117 +147,126 @@ public class DrawToBmp {
   static int now_frame = 0;
 
   static void saveFrame(BMPImage myBmp) throws IOException {
+    if (now_frame >= 10) {
+      return;
+    }
     String nowFrame = String.format("frame%d.bmp", now_frame++);
     myBmp.filename = nowFrame;
     createBMP(myBmp);
   }
 
   static boolean fallTetramino(BMPImage myBmp, int tetraminoType, int x, int y, boolean endGame) throws IOException {
-    int frame = 0;
     int checkIndex = (y + 1) * myBmp.stride + x * 3;
     boolean endFall = false;
     if (checkIndex > myBmp.imageSize) {
       endFall = true;
     }
-      switch (tetraminoType) {
-        case 1:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 3 * blockSize] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+    switch (tetraminoType) {
+      case 1:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 3 * blockSize] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftOTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 2:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftOTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 2:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftITetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 3:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 30] != (byte) 0xff ||
-                 myBmp.data[checkIndex + 60 - myBmp.stride] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftITetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 3:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 30] != (byte)-1 ||
+              myBmp.data[checkIndex + 60 - myBmp.stride] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftSTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 4:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30] != (byte) 0xff ||
-                myBmp.data[checkIndex - 60 - myBmp.stride] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftSTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 4:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30] != (byte)-1 ||
+              myBmp.data[checkIndex - 60 - myBmp.stride] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftZTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 5:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex + 30] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftZTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 5:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 30] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftLTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 6:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftLTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 6:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftJTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        case 7:
-          while (!endFall ) {
-            saveFrame(myBmp);
-            if (myBmp.data[checkIndex] != (byte) 0xff || myBmp.data[checkIndex - 30 - myBmp.stride] != (byte) 0xff ||
-                myBmp.data[checkIndex + 30 - myBmp.stride] != (byte) 0xff) {
-              if (y == 0) {
-                endGame = true;
-              }
-              return endGame;
+          TetrisRenderer.shiftJTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      case 7:
+        while (!endFall ) {
+          saveFrame(myBmp);
+          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30 - myBmp.stride] != (byte)-1 ||
+              myBmp.data[checkIndex + 30 - myBmp.stride] != (byte)-1) {
+            if (y == 0) {
+              endGame = true;
             }
-            TetrisRenderer.shiftTTetromino(myBmp, x, y, blockSize);
-            y += blockSize;
+            return endGame;
           }
-          break;
-        default:
-          System.err.println("fallTetramino не сработало");
-          break;
-      }
+          TetrisRenderer.shiftTTetromino(myBmp, x, y, blockSize);
+          y += blockSize;
+          checkIndex += myBmp.stride;
+        }
+        break;
+      default:
+        System.err.println("fallTetramino не сработало");
+        break;
+    }
     return endGame;
   }
 
@@ -291,9 +274,9 @@ public class DrawToBmp {
     boolean endGame = false;
     int y = 0;
     Random random = new Random();
-    int randomInt = random.nextInt(7);
-    int RanomCoor = random.nextInt(myBmp.width-10);
     while (!endGame) {
+      int randomInt = random.nextInt(7) + 1;
+      int RanomCoor = random.nextInt(myBmp.width-10);
       int x = RanomCoor / 10 * 10;
       int a = randomInt;
       switch (a) {

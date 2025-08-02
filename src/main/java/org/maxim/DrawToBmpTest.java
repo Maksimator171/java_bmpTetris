@@ -34,6 +34,32 @@ public class DrawToBmpTest {
 
     DrawToBmpMain.main(a("picture5.bmp", "100", "200", "Otetromino", "0", "0", "Itetromino", "25", "25", "Stetromino", "25", "50",
         "Ztetromino", "50", "25", "Ltetromino", "50", "50", "Jtetromino", "50", "75", "Ttetromino", "75", "50"));
+
+    DrawToBmpMain.main(a("test_I_move.bmp", "100", "200",
+        "clear", "FFFFFF",
+        "Itetromino", "50", "0",
+        "shiftItetromino", "50", "0",
+        "shiftItetromino", "50", "10",
+        "shiftItetromino", "50", "20",
+        "shiftItetromino", "50", "30"
+    ));
+
+    DrawToBmpMain.main(a("test_mixed_moves.bmp", "300", "300",
+        "clear", "FFFFFF",
+        "Otetromino", "50", "0",
+        "Itetromino", "100", "0",
+        "Stetromino", "150", "0",
+        "shiftOtetromino", "50", "0",
+        "shiftItetromino", "100", "0",
+        "shiftStetromino", "150", "0"
+    ));
+
+    DrawToBmpMain.main(a("test_O_move.bmp", "100", "200",
+        "clear", "FFFFFF",
+        "Otetromino", "50", "0",
+        "shiftOtetromino", "50", "0",
+        "shiftOtetromino", "50", "10"
+    ));
   }
 
 }

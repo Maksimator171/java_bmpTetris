@@ -127,7 +127,7 @@ public class DrawToBmpMain {
           myBmp.height = 200;
           myBmp.width = 100;
           DrawToBmp.clear(myBmp, "ffffff");
-          DrawToBmp.tetrisGame(myBmp);
+          TetrisGame.tetrisGame(myBmp);
           i += 1;
           break;
         default:
@@ -136,7 +136,7 @@ public class DrawToBmpMain {
 
       }
     }
-    DrawToBmp.createBMP(myBmp);
+    DrawToBmp.writeBmpToFile(myBmp);
     //return;
 
   }

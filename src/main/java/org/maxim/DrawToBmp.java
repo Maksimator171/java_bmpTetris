@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.lang.Math;
-import java.util.Random;
 
 import static org.maxim.ArrayOp.*;
 
@@ -44,7 +43,7 @@ public class DrawToBmp {
     Files.write(Path.of(filename), bytes, StandardOpenOption.APPEND);
   }
 
-  static void createBMP(BMPImage myBMP) throws IOException {
+  static void writeBmpToFile(BMPImage myBMP) throws IOException {
     final int bfType = 0x4D42;
     final int bfOffBits = 54;
     final int biSize = 40;
@@ -144,173 +143,4 @@ public class DrawToBmp {
     draw_rect(myBmp, x, y, width, height, color);
   }
 
-  static int now_frame = 0;
-
-  static void saveFrame(BMPImage myBmp) throws IOException {
-    if (now_frame >= 10) {
-      return;
-    }
-    String nowFrame = String.format("frame%d.bmp", now_frame++);
-    myBmp.filename = nowFrame;
-    createBMP(myBmp);
-  }
-
-  static boolean fallTetramino(BMPImage myBmp, int tetraminoType, int x, int y, boolean endGame) throws IOException {
-    int checkIndex = (y + 1) * myBmp.stride + x * 3;
-    boolean endFall = false;
-    if (checkIndex > myBmp.imageSize) {
-      endFall = true;
-    }
-    switch (tetraminoType) {
-      case 1:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 3 * blockSize] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftOTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 2:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftITetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 3:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 30] != (byte)-1 ||
-              myBmp.data[checkIndex + 60 - myBmp.stride] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftSTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 4:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30] != (byte)-1 ||
-              myBmp.data[checkIndex - 60 - myBmp.stride] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftZTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 5:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex + 30] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftLTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 6:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftJTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      case 7:
-        while (!endFall ) {
-          saveFrame(myBmp);
-          if (myBmp.data[checkIndex] != (byte)-1 || myBmp.data[checkIndex - 30 - myBmp.stride] != (byte)-1 ||
-              myBmp.data[checkIndex + 30 - myBmp.stride] != (byte)-1) {
-            if (y == 0) {
-              endGame = true;
-            }
-            return endGame;
-          }
-          TetrisRenderer.shiftTTetromino(myBmp, x, y, blockSize);
-          y += blockSize;
-          checkIndex += myBmp.stride;
-        }
-        break;
-      default:
-        System.err.println("fallTetramino не сработало");
-        break;
-    }
-    return endGame;
-  }
-
-  static void tetrisGame(BMPImage myBmp) throws IOException {
-    boolean endGame = false;
-    int y = 0;
-    Random random = new Random();
-    while (!endGame) {
-      int randomInt = random.nextInt(7) + 1;
-      int RanomCoor = random.nextInt(myBmp.width-10);
-      int x = RanomCoor / 10 * 10;
-      int a = randomInt;
-      switch (a) {
-        case 1 -> {
-          TetrisRenderer.drawOTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 2 -> {
-          TetrisRenderer.drawITetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 3 -> {
-          TetrisRenderer.drawSTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 4 -> {
-          TetrisRenderer.drawZTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 5 -> {
-          TetrisRenderer.drawLTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 6 -> {
-          TetrisRenderer.drawJTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        case 7 -> {
-          TetrisRenderer.drawTTetromino(myBmp, x, y, blockSize);
-          fallTetramino(myBmp, a, x, y, endGame);
-        }
-        default -> System.err.println("tetrisGame не сработало");
-      }
-
-    }
-  }
 }

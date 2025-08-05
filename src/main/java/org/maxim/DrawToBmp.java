@@ -43,7 +43,7 @@ public class DrawToBmp {
     Files.write(Path.of(filename), bytes, StandardOpenOption.APPEND);
   }
 
-  static void writeBmpToFile(BMPImage myBMP) throws IOException {
+  static void writeBmpToFile(BMPImage myBMP, String filename) throws IOException {
     final int bfType = 0x4D42;
     final int bfOffBits = 54;
     final int biSize = 40;
@@ -76,8 +76,8 @@ public class DrawToBmp {
     index = pushUint32_t(biClrUsed, myBMP.header_data, index);
     pushUint32_t(biClrImportant, myBMP.header_data, index);
 
-    writeFile(myBMP.filename, myBMP.header_data);
-    AddToFile(myBMP.filename, myBMP.data);
+    writeFile(filename, myBMP.header_data);
+    AddToFile(filename, myBMP.data);
   }
 
   static byte[] parseColor (String hex_color) {

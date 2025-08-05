@@ -124,8 +124,8 @@ public class DrawToBmpMain {
           i += 3;
           break;
         case "tetrisGame":
-          myBmp.height = 200;
           myBmp.width = 100;
+          myBmp.height = 200;
           DrawToBmp.clear(myBmp, "ffffff");
           TetrisGame.tetrisGame(myBmp);
           i += 1;
@@ -136,7 +136,7 @@ public class DrawToBmpMain {
 
       }
     }
-    DrawToBmp.writeBmpToFile(myBmp);
+    DrawToBmp.writeBmpToFile(myBmp, myBmp.filename);
     //return;
 
   }

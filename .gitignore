@@ -3,7 +3,5 @@ target/
 ### IntelliJ IDEA ###
 .idea/*
 
-build/
-
 ### VS Code ###
 .vscode/

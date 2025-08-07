@@ -20,7 +20,7 @@ class TetrisGame {
     TetrisGame tetrisGame = new TetrisGame();
     tetrisGame.writeToFile(bmp);
     int a = 0;
-    while (500 > a++) {
+    while (100 > a++ && !endGame) {
       tetrisGame.step(bmp);
       tetrisGame.writeToFile(bmp);
     }
@@ -131,6 +131,7 @@ class TetrisGame {
     int checkIndexField = x / 10 + (y / 10 + 1) * (bmp.width / 10);
     if (checkIndexField > 200) {
       fallTetramino = false;
+      y_tetramino = 0;
       return true;
     }
     switch (tetraminoType) {
@@ -140,6 +141,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftOTetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -157,6 +159,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftITetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -173,6 +176,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftSTetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -193,6 +197,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftZTetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -212,6 +217,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftLTetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -229,6 +235,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftJTetromino(bmp, x, y, DrawToBmp.blockSize);
@@ -247,6 +254,7 @@ class TetrisGame {
               endGame = true;
             }
             fallTetramino = false;
+            y_tetramino = 0;
             return endGame;
           }
           TetrisRenderer.shiftTTetromino(bmp, x, y, DrawToBmp.blockSize);

@@ -2,7 +2,7 @@ package org.maxim;
 
 import java.io.IOException;
 
-public class DrawToBmpMain {
+public class  DrawToBmpMain {
   public static void main(String[] args) throws IOException {
 
     int argc = args.length;

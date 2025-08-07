@@ -8,7 +8,7 @@ import java.lang.Math;
 
 import static org.maxim.ArrayOp.*;
 
-public class DrawToBmp {
+public class  DrawToBmp {
   static int blockSize = 10;
 
   static class BMPImage {

@@ -1,6 +1,6 @@
 package org.maxim;
 
-public class TetrisRenderer {
+public class  TetrisRenderer {
 
   static class TetrisColors {
     public TetrisColors(String color, String border) {

@@ -2,7 +2,7 @@ package org.maxim;
 
 import java.io.IOException;
 
-public class DrawToBmpTest {
+public class  DrawToBmpTest {
 
   static String[] a(String ... a) {
     return a;
